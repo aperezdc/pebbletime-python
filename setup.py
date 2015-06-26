@@ -32,14 +32,14 @@ if __name__ == "__main__":
         scripts=["pebbletime-cli"],
         install_requires=[
             "aiohttp>=0.16.0",
-            "intheam>=0.1",
+            "intheam>=0.0.1",
         ],
         extras_require={
             "cli": ["click>=4.0.0"],
         },
         license="MIT",
         classifiers=[
-            "Development Status :: 4 - Beta",
+            "Development Status :: 3 - Alpha",
             "Intended Audience :: Developers",
             "Natural Language :: English",
             "Programming Language :: Python :: 3.4",
