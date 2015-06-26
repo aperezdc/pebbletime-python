@@ -1,0 +1,4 @@
+*.py[cod]
+.coverage
+pebbletime.egg-info/
+.*.sw[op]
