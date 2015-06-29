@@ -7,7 +7,7 @@
 # Distributed under terms of the MIT license.
 
 import aiohttp
-from intheam import schema, SchemaString, SchemaDate, Schemed, Enum
+import lasso
 
 
 class BasaltColor(object):
@@ -17,137 +17,139 @@ class BasaltColor(object):
 BASE_URL = "https://timeline-api.getpebble.com/v1"
 
 
-PinLayoutType = Enum("PinLayoutType",
-    GENERIC      = "genericPin",
-    CALENDAR     = "calendarPin",
-    REMINDER     = "genericReminder",
-    NOTIFICATION = "genericNotification",
-    COMM         = "commNotification",
-    WEATHER      = "weatherPin",
-    SPORTS       = "sportsPin",
-)
+SchemaString = lasso.And(str, len)
 
 
-PinIcon = Enum("PinIcon",
-    GENERIC     = "system://images/NOTIFICATION_GENERIC",
-    REMINDER    = "system://images/NOTIFICATION_REMINDER",
-    FLAG        = "system://images/NOTIFICATION_FLAG",
-    FBMESSENGER = "system://images/NOTIFICATION_FACEBOOK_MESSENGER",
-    WHATSAPP    = "system://images/NOTIFICATION_WHATSAPP",
-    GMAIL       = "system://images/NOTIFICATION_GMAIL",
-    FACEBOOK    = "system://images/NOTIFICATION_FACEBOOK",
-    HANGOUTS    = "system://images/NOTIFICATION_GOOGLE_HANGOUTS",
-    TELEGRAM    = "system://images/NOTIFICATION_TELEGRAM",
-    TWITTER     = "system://images/NOTIFICATION_TWITTER",
-    GINBOX      = "system://images/NOTIFICATION_GOOGLE_INBOX",
-    MAILBOX     = "system://images/NOTIFICATION_MAILBOX",
-    OUTLOOK     = "system://images/NOTIFICATION_OUTLOOK",
-    INSTAGRAM   = "system://images/NOTIFICATION_INSTAGRAM",
-    BBM         = "system://images/NOTIFICATION_BLACKBERRY_MESSENGER",
-    LINE        = "system://images/NOTIFICATION_LINE",
-    SNAPCHAT    = "system://images/NOTIFICATION_SNAPCHAT",
-    WECHAT      = "system://images/NOTIFICATION_WECHAT",
-    VIBER       = "system://images/NOTIFICATION_VIBER",
-    SKYPE       = "system://images/NOTIFICATION_SKYPE",
-    YAHOOMAIL   = "system://images/NOTIFICATION_YAHOO_MAIL",
+
+class PinLayoutType(lasso.Enum):
+    GENERIC      = "genericPin"
+    CALENDAR     = "calendarPin"
+    REMINDER     = "genericReminder"
+    NOTIFICATION = "genericNotification"
+    COMM         = "commNotification"
+    WEATHER      = "weatherPin"
+    SPORTS       = "sportsPin"
+
+
+class PinIcon(lasso.Enum):
+    GENERIC     = "system://images/NOTIFICATION_GENERIC"
+    REMINDER    = "system://images/NOTIFICATION_REMINDER"
+    FLAG        = "system://images/NOTIFICATION_FLAG"
+    FBMESSENGER = "system://images/NOTIFICATION_FACEBOOK_MESSENGER"
+    WHATSAPP    = "system://images/NOTIFICATION_WHATSAPP"
+    GMAIL       = "system://images/NOTIFICATION_GMAIL"
+    FACEBOOK    = "system://images/NOTIFICATION_FACEBOOK"
+    HANGOUTS    = "system://images/NOTIFICATION_GOOGLE_HANGOUTS"
+    TELEGRAM    = "system://images/NOTIFICATION_TELEGRAM"
+    TWITTER     = "system://images/NOTIFICATION_TWITTER"
+    GINBOX      = "system://images/NOTIFICATION_GOOGLE_INBOX"
+    MAILBOX     = "system://images/NOTIFICATION_MAILBOX"
+    OUTLOOK     = "system://images/NOTIFICATION_OUTLOOK"
+    INSTAGRAM   = "system://images/NOTIFICATION_INSTAGRAM"
+    BBM         = "system://images/NOTIFICATION_BLACKBERRY_MESSENGER"
+    LINE        = "system://images/NOTIFICATION_LINE"
+    SNAPCHAT    = "system://images/NOTIFICATION_SNAPCHAT"
+    WECHAT      = "system://images/NOTIFICATION_WECHAT"
+    VIBER       = "system://images/NOTIFICATION_VIBER"
+    SKYPE       = "system://images/NOTIFICATION_SKYPE"
+    YAHOOMAIL   = "system://images/NOTIFICATION_YAHOO_MAIL"
 
     # Generic icons.
-    GENERIC_EMAIL    = "system://images/GENERIC_EMAIL",
-    GENERIC_SMS      = "system://images/GENERIC_SMS",
-    GENERIC_WARNING  = "system://images/GENERIC_WARNING",
-    GENERIC_CONFIRM  = "system://images/GENERIC_CONFIRMATION",
-    GENERIC_QUESTION = "system://images/GENERIC_QUESTION",
+    GENERIC_EMAIL    = "system://images/GENERIC_EMAIL"
+    GENERIC_SMS      = "system://images/GENERIC_SMS"
+    GENERIC_WARNING  = "system://images/GENERIC_WARNING"
+    GENERIC_CONFIRM  = "system://images/GENERIC_CONFIRMATION"
+    GENERIC_QUESTION = "system://images/GENERIC_QUESTION"
 
     # Weather icons.
-    PARTLY_CLOUDY       = "system://images/PARTLY_CLOUDY",
-    CLOUDY_DAY          = "system://images/CLOUDY_DAY",
-    LIGHT_SNOW          = "system://images/LIGHT_SNOW",
-    LIGHT_RAIN          = "system://images/LIGHT_RAIN",
-    HEAVY_RAIN          = "system://images/HEAVY_RAIN",
-    HEAVY_SNOW          = "system://images/HEAVY_SNOW",
-    TIMELINE_WEATHER    = "system://images/TIMELINE_WEATHER",
-    TIMELINE_SUN        = "system://images/TIMELINE_SUN",
-    RAINING_AND_SNOWING = "system://images/RAINING_AND_SNOWING",
-    TIDE_IS_HIGH        = "system://images/TIDE_IS_HIGH",
+    PARTLY_CLOUDY       = "system://images/PARTLY_CLOUDY"
+    CLOUDY_DAY          = "system://images/CLOUDY_DAY"
+    LIGHT_SNOW          = "system://images/LIGHT_SNOW"
+    LIGHT_RAIN          = "system://images/LIGHT_RAIN"
+    HEAVY_RAIN          = "system://images/HEAVY_RAIN"
+    HEAVY_SNOW          = "system://images/HEAVY_SNOW"
+    TIMELINE_WEATHER    = "system://images/TIMELINE_WEATHER"
+    TIMELINE_SUN        = "system://images/TIMELINE_SUN"
+    RAINING_AND_SNOWING = "system://images/RAINING_AND_SNOWING"
+    TIDE_IS_HIGH        = "system://images/TIDE_IS_HIGH"
 
     # Timeline item icons.
-    TIMELINE_MISSED_CALL = "system://images/TIMELINE_MISSED_CALL",
-    TIMELINE_CALENDAR    = "system://images/TIMELINE_CALENDAR",
-    TIMELINE_SPORTS      = "system://images/TIMELINE_SPORTS",
-    TIMELINE_BASEBALL    = "system://images/TIMELINE_BASEBALL",
+    TIMELINE_MISSED_CALL = "system://images/TIMELINE_MISSED_CALL"
+    TIMELINE_CALENDAR    = "system://images/TIMELINE_CALENDAR"
+    TIMELINE_SPORTS      = "system://images/TIMELINE_SPORTS"
+    TIMELINE_BASEBALL    = "system://images/TIMELINE_BASEBALL"
 
     # Sports.
-    AMERICAN_FOOTBALL = "system://images/AMERICAN_FOOTBALL",
-    CRICKET_GAME      = "system://images/CRICKET_GAME",
-    SOCCER_GAME       = "system://images/SOCCER_GAME",
-    HOCKEY_GAME       = "system://images/HOCKEY_GAME",
+    AMERICAN_FOOTBALL = "system://images/AMERICAN_FOOTBALL"
+    CRICKET_GAME      = "system://images/CRICKET_GAME"
+    SOCCER_GAME       = "system://images/SOCCER_GAME"
+    HOCKEY_GAME       = "system://images/HOCKEY_GAME"
 
-    RESULT_DISMISSED = "system://images/RESULT_DISMISSED",
-    RESULT_DELETED   = "system://images/RESULT_DELETED",
-    RESULT_MUTE      = "system://images/RESULT_MUTE",
-    RESULT_SENT      = "system://images/RESULT_SENT",
-    RESULT_FAILED    = "system://images/RESULT_FAILED",
+    RESULT_DISMISSED = "system://images/RESULT_DISMISSED"
+    RESULT_DELETED   = "system://images/RESULT_DELETED"
+    RESULT_MUTE      = "system://images/RESULT_MUTE"
+    RESULT_SENT      = "system://images/RESULT_SENT"
+    RESULT_FAILED    = "system://images/RESULT_FAILED"
 
-    STOCKS_EVENT    = "system://images/STOCKS_EVENT",
-    MUSIC_EVENT     = "system://images/MUSIC_EVENT",
-    BIRTHDAY_EVENT  = "system://images/BIRTHDAY_EVENT",
-    SCHEDULED_EVENT = "system://images/SCHEDULED_EVENT",
-    MOVIE_EVENT     = "system://images/MOVIE_EVENT",
+    STOCKS_EVENT    = "system://images/STOCKS_EVENT"
+    MUSIC_EVENT     = "system://images/MUSIC_EVENT"
+    BIRTHDAY_EVENT  = "system://images/BIRTHDAY_EVENT"
+    SCHEDULED_EVENT = "system://images/SCHEDULED_EVENT"
+    MOVIE_EVENT     = "system://images/MOVIE_EVENT"
 
-    PAY_BILL                  = "system://images/PAY_BILL",
-    HOTEL_RESERVATION         = "system://images/HOTEL_RESERVATION",
-    NEWS_EVENT                = "system://images/NEWS_EVENT",
-    DURING_PHONE_CALL         = "system://images/DURING_PHONE_CALL",
-    CHECK_INTERNET_CONNECTION = "system://images/CHECK_INTERNET_CONNECTION",
-    GLUCOSE_MONITOR           = "system://images/GLUCOSE_MONITOR",
-    ALARM_CLOCK               = "system://images/ALARM_CLOCK",
-    CAR_RENTAL                = "system://images/CAR_RENTAL",
-    DINNER_RESERVATION        = "system://images/DINNER_RESERVATION",
-    RADIO_SHOW                = "system://images/RADIO_SHOW",
-    AUDIO_CASSETTE            = "system://images/AUDIO_CASSETTE",
-    SCHEDULED_FLIGHT          = "system://images/SCHEDULED_FLIGHT",
-    NO_EVENTS                 = "system://images/NO_EVENTS",
-    REACHED_FITNESS_GOAL      = "system://images/REACHED_FITNESS_GOAL",
-    DAY_SEPARATOR             = "system://images/DAY_SEPARATOR",
-    WATCH_DISCONNECTED        = "system://images/WATCH_DISCONNECTED",
-    TV_SHOW                   = "system://images/TV_SHOW",
-)
+    PAY_BILL                  = "system://images/PAY_BILL"
+    HOTEL_RESERVATION         = "system://images/HOTEL_RESERVATION"
+    NEWS_EVENT                = "system://images/NEWS_EVENT"
+    DURING_PHONE_CALL         = "system://images/DURING_PHONE_CALL"
+    CHECK_INTERNET_CONNECTION = "system://images/CHECK_INTERNET_CONNECTION"
+    GLUCOSE_MONITOR           = "system://images/GLUCOSE_MONITOR"
+    ALARM_CLOCK               = "system://images/ALARM_CLOCK"
+    CAR_RENTAL                = "system://images/CAR_RENTAL"
+    DINNER_RESERVATION        = "system://images/DINNER_RESERVATION"
+    RADIO_SHOW                = "system://images/RADIO_SHOW"
+    AUDIO_CASSETTE            = "system://images/AUDIO_CASSETTE"
+    SCHEDULED_FLIGHT          = "system://images/SCHEDULED_FLIGHT"
+    NO_EVENTS                 = "system://images/NO_EVENTS"
+    REACHED_FITNESS_GOAL      = "system://images/REACHED_FITNESS_GOAL"
+    DAY_SEPARATOR             = "system://images/DAY_SEPARATOR"
+    WATCH_DISCONNECTED        = "system://images/WATCH_DISCONNECTED"
+    TV_SHOW                   = "system://images/TV_SHOW"
 
 
-class Layout(Schemed):
+class Layout(lasso.Schemed):
     Type = PinLayoutType
     Icon = PinIcon
 
-    __schema__ = schema.Schema({
-        "type"  : schema.Use(Type),
+    __schema__ = {
+        "type"  : Type,
         "title" : SchemaString,
 
         # The rest are all kind-of optional, and their required presence
         # depends on the type (which is the only mandatory field)
-        schema.Optional("shortTitle")      : SchemaString,
-        schema.Optional("subtitle")        : SchemaString,
-        schema.Optional("body")            : SchemaString,
-        schema.Optional("tinyIcon")        : schema.Use(Icon),
-        schema.Optional("largeIcon")       : schema.Use(Icon),
-        schema.Optional("primaryColor")    : schema.Use(BasaltColor),
-        schema.Optional("secondaryColor")  : schema.Use(BasaltColor),
-        schema.Optional("backgroundColor") : schema.Use(BasaltColor),
-        schema.Optional("headings")        : [SchemaString],
-        schema.Optional("paragraphs")      : [SchemaString],
-        schema.Optional("lastUpdated")     : SchemaDate,
-        schema.Optional("locationName")    : SchemaString,
-        schema.Optional("sender")          : SchemaString,
-        schema.Optional("broadcaster")     : SchemaString,
-        schema.Optional("rankAway")        : SchemaString,
-        schema.Optional("rankHome")        : SchemaString,
-        schema.Optional("nameAway")        : SchemaString,
-        schema.Optional("nameHome")        : SchemaString,
-        schema.Optional("recordAway")      : SchemaString,
-        schema.Optional("recordHome")      : SchemaString,
-        schema.Optional("scoreAway")       : SchemaString,
-        schema.Optional("scoreHome")       : SchemaString,
-        schema.Optional("sportsGameState") : SchemaString,
-    })
+        lasso.Optional("shortTitle")      : SchemaString,
+        lasso.Optional("subtitle")        : SchemaString,
+        lasso.Optional("body")            : SchemaString,
+        lasso.Optional("tinyIcon")        : Icon,
+        lasso.Optional("largeIcon")       : Icon,
+        lasso.Optional("primaryColor")    : lasso.Use(BasaltColor),
+        lasso.Optional("secondaryColor")  : lasso.Use(BasaltColor),
+        lasso.Optional("backgroundColor") : lasso.Use(BasaltColor),
+        lasso.Optional("headings")        : [SchemaString],
+        lasso.Optional("paragraphs")      : [SchemaString],
+        lasso.Optional("lastUpdated")     : lasso.Timestamp,
+        lasso.Optional("locationName")    : SchemaString,
+        lasso.Optional("sender")          : SchemaString,
+        lasso.Optional("broadcaster")     : SchemaString,
+        lasso.Optional("rankAway")        : SchemaString,
+        lasso.Optional("rankHome")        : SchemaString,
+        lasso.Optional("nameAway")        : SchemaString,
+        lasso.Optional("nameHome")        : SchemaString,
+        lasso.Optional("recordAway")      : SchemaString,
+        lasso.Optional("recordHome")      : SchemaString,
+        lasso.Optional("scoreAway")       : SchemaString,
+        lasso.Optional("scoreHome")       : SchemaString,
+        lasso.Optional("sportsGameState") : SchemaString,
+    }
 
     TYPE_REQUIRED_FIELDS = {
         Type.GENERIC      : ("tinyIcon",),
@@ -163,7 +165,7 @@ class Layout(Schemed):
         for field in self.TYPE_REQUIRED_FIELDS.get(self.type, ()):
             if not hasattr(self, field):
                 raise ValueError("'{}' is required by layout {}".format(
-                    field, self.Type.name(self.type)))
+                    field, self.type.name))
 
     def __init__(self, title, type=Type.GENERIC, *arg, **kw):
         super(Layout, self).__init__(title=title, type=type, *arg, **kw)
@@ -182,26 +184,63 @@ class Layout(Schemed):
                         "same as number of paragraphs")
 
 
+class Action(lasso.Schemed):
+    __schema__ = {
+        "type" : SchemaString,
+        lasso.Optional("launchCode") : int,
+        lasso.Optional("title")      : SchemaString,
+    }
 
-class Reminder(Schemed):
-    __schema__ = schema.Schema({
-        "time"                    : SchemaDate,
-        schema.Optional("layout") : schema.Use(PinLayoutType),
-    })
+    def __init__(self, type, title=None, launchCode=None):
+        params = { "type" : type }
+        if title is not None:
+            params["title"] = str(title)
+        if launchCode is not None:
+            params["launchCode"] = int(launchCode)
+        super(Action, self).__init__(**params)
 
 
+class Reminder(lasso.Schemed):
+    __schema__ = {
+        "time"                   : lasso.Timestamp,
+        lasso.Optional("layout") : Layout,
+    }
 
-class Pin(Schemed):
-    LayoutType = PinLayoutType
-    Icon       = PinIcon
+    def __init__(self, time, layout=None):
+        params = { "time" : time }
+        if layout is not None:
+            params["layout"] = layout
+        super(Reminder, self).__init__(**params)
 
-    __schema__ = schema.Schema({
-        "id"   : SchemaString,
 
-        # Optional
-        schema.Optional("layout") : schema.Use(PinLayoutType),
-        schema.Optional("icon")   : schema.Use(PinIcon),
-    })
+class Notification(lasso.Schemed):
+    __schema__ = {
+        "layout"               : Layout,
+        lasso.Optional("time") : lasso.Timestamp,
+    }
+
+    def __init__(self, time, layout):
+        super(Notification, self).__init__(time=time, layout=layout)
+
+
+class Pin(lasso.Schemed):
+    Icon = PinIcon
+
+    __schema__ = {
+        "id"     : SchemaString,
+        "time"   : lasso.Timestamp,
+        "layout" : Layout,
+
+        lasso.Optional("icon")               : Icon,
+        lasso.Optional("actions")            : [Action],
+        lasso.Optional("duration")           : int,
+        lasso.Optional("reminders")          : [Reminder],
+        lasso.Optional("createNotification") : Notification,
+        lasso.Optional("updateNotification") : Notification,
+    }
+
+    def __init__(self, id, time, layout, **kw):
+        super(Pin, self).__init__(id=id, time=time, layout=layout, **kw)
 
 
 class Timeline(object):

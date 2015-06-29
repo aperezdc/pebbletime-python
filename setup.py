@@ -32,7 +32,7 @@ if __name__ == "__main__":
         scripts=["pebbletime-cli"],
         install_requires=[
             "aiohttp>=0.16.0",
-            "intheam>=0.0.1",
+            "lasso>=0.0.3",
         ],
         extras_require={
             "cli": ["click>=4.0.0"],
