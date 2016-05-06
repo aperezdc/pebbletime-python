@@ -7,7 +7,7 @@
 # Distributed under terms of the MIT license.
 
 import aiohttp
-import lasso
+import gnarl
 
 
 class BasaltColor(object):
@@ -17,11 +17,11 @@ class BasaltColor(object):
 BASE_URL = "https://timeline-api.getpebble.com/v1"
 
 
-SchemaString = lasso.And(str, len)
+SchemaString = gnarl.And(str, len)
 
 
 
-class PinLayoutType(lasso.Enum):
+class PinLayoutType(gnarl.Enum):
     GENERIC      = "genericPin"
     CALENDAR     = "calendarPin"
     REMINDER     = "genericReminder"
@@ -31,7 +31,7 @@ class PinLayoutType(lasso.Enum):
     SPORTS       = "sportsPin"
 
 
-class PinIcon(lasso.Enum):
+class PinIcon(gnarl.Enum):
     GENERIC     = "system://images/NOTIFICATION_GENERIC"
     REMINDER    = "system://images/NOTIFICATION_REMINDER"
     FLAG        = "system://images/NOTIFICATION_FLAG"
@@ -116,7 +116,7 @@ class PinIcon(lasso.Enum):
     TV_SHOW                   = "system://images/TV_SHOW"
 
 
-class Layout(lasso.Schemed):
+class Layout(gnarl.Schemed):
     Type = PinLayoutType
     Icon = PinIcon
 
@@ -126,29 +126,29 @@ class Layout(lasso.Schemed):
 
         # The rest are all kind-of optional, and their required presence
         # depends on the type (which is the only mandatory field)
-        lasso.Optional("shortTitle")      : SchemaString,
-        lasso.Optional("subtitle")        : SchemaString,
-        lasso.Optional("body")            : SchemaString,
-        lasso.Optional("tinyIcon")        : Icon,
-        lasso.Optional("largeIcon")       : Icon,
-        lasso.Optional("primaryColor")    : lasso.Use(BasaltColor),
-        lasso.Optional("secondaryColor")  : lasso.Use(BasaltColor),
-        lasso.Optional("backgroundColor") : lasso.Use(BasaltColor),
-        lasso.Optional("headings")        : [SchemaString],
-        lasso.Optional("paragraphs")      : [SchemaString],
-        lasso.Optional("lastUpdated")     : lasso.Timestamp,
-        lasso.Optional("locationName")    : SchemaString,
-        lasso.Optional("sender")          : SchemaString,
-        lasso.Optional("broadcaster")     : SchemaString,
-        lasso.Optional("rankAway")        : SchemaString,
-        lasso.Optional("rankHome")        : SchemaString,
-        lasso.Optional("nameAway")        : SchemaString,
-        lasso.Optional("nameHome")        : SchemaString,
-        lasso.Optional("recordAway")      : SchemaString,
-        lasso.Optional("recordHome")      : SchemaString,
-        lasso.Optional("scoreAway")       : SchemaString,
-        lasso.Optional("scoreHome")       : SchemaString,
-        lasso.Optional("sportsGameState") : SchemaString,
+        "shortTitle"      : gnarl.Optional(SchemaString),
+        "subtitle"        : gnarl.Optional(SchemaString),
+        "body"            : gnarl.Optional(SchemaString),
+        "tinyIcon"        : gnarl.Optional(Icon),
+        "largeIcon"       : gnarl.Optional(Icon),
+        "primaryColor"    : gnarl.Optional(gnarl.Use(BasaltColor)),
+        "secondaryColor"  : gnarl.Optional(gnarl.Use(BasaltColor)),
+        "backgroundColor" : gnarl.Optional(gnarl.Use(BasaltColor)),
+        "headings"        : gnarl.Optional([SchemaString]),
+        "paragraphs"      : gnarl.Optional([SchemaString]),
+        "lastUpdated"     : gnarl.Optional(gnarl.Timestamp),
+        "locationName"    : gnarl.Optional(SchemaString),
+        "sender"          : gnarl.Optional(SchemaString),
+        "broadcaster"     : gnarl.Optional(SchemaString),
+        "rankAway"        : gnarl.Optional(SchemaString),
+        "rankHome"        : gnarl.Optional(SchemaString),
+        "nameAway"        : gnarl.Optional(SchemaString),
+        "nameHome"        : gnarl.Optional(SchemaString),
+        "recordAway"      : gnarl.Optional(SchemaString),
+        "recordHome"      : gnarl.Optional(SchemaString),
+        "scoreAway"       : gnarl.Optional(SchemaString),
+        "scoreHome"       : gnarl.Optional(SchemaString),
+        "sportsGameState" : gnarl.Optional(SchemaString),
     }
 
     TYPE_REQUIRED_FIELDS = {
@@ -184,11 +184,11 @@ class Layout(lasso.Schemed):
                         "same as number of paragraphs")
 
 
-class Action(lasso.Schemed):
+class Action(gnarl.Schemed):
     __schema__ = {
-        "type" : SchemaString,
-        lasso.Optional("launchCode") : int,
-        lasso.Optional("title")      : SchemaString,
+        "type"       : SchemaString,
+        "launchCode" : gnarl.Optional(int),
+        "title"      : gnarl.Optional(SchemaString),
     }
 
     def __init__(self, type, title=None, launchCode=None):
@@ -200,10 +200,10 @@ class Action(lasso.Schemed):
         super(Action, self).__init__(**params)
 
 
-class Reminder(lasso.Schemed):
+class Reminder(gnarl.Schemed):
     __schema__ = {
-        "time"                   : lasso.Timestamp,
-        lasso.Optional("layout") : Layout,
+        "time"   : gnarl.Timestamp,
+        "layout" : gnarl.Optional(Layout),
     }
 
     def __init__(self, time, layout=None):
@@ -213,30 +213,30 @@ class Reminder(lasso.Schemed):
         super(Reminder, self).__init__(**params)
 
 
-class Notification(lasso.Schemed):
+class Notification(gnarl.Schemed):
     __schema__ = {
-        "layout"               : Layout,
-        lasso.Optional("time") : lasso.Timestamp,
+        "layout" : Layout,
+        "time"   : gnarl.Optional(gnarl.Timestamp),
     }
 
     def __init__(self, time, layout):
         super(Notification, self).__init__(time=time, layout=layout)
 
 
-class Pin(lasso.Schemed):
+class Pin(gnarl.Schemed):
     Icon = PinIcon
 
     __schema__ = {
         "id"     : SchemaString,
-        "time"   : lasso.Timestamp,
+        "time"   : gnarl.Timestamp,
         "layout" : Layout,
 
-        lasso.Optional("icon")               : Icon,
-        lasso.Optional("actions")            : [Action],
-        lasso.Optional("duration")           : int,
-        lasso.Optional("reminders")          : [Reminder],
-        lasso.Optional("createNotification") : Notification,
-        lasso.Optional("updateNotification") : Notification,
+        "icon"               : gnarl.Optional(Icon),
+        "actions"            : gnarl.Optional([Action]),
+        "duration"           : gnarl.Optional(int),
+        "reminders"          : gnarl.Optional([Reminder]),
+        "createNotification" : gnarl.Optional(Notification),
+        "updateNotification" : gnarl.Optional(Notification),
     }
 
     def __init__(self, id, time, layout, **kw):
