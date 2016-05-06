@@ -22,7 +22,7 @@ def file_contents(*relpath):
 if __name__ == "__main__":
     setup(
         name="pebbletime",
-        version="0.1",
+        version="0.1.1",
         description="Module to access the Pebble Timeline API asynchronously",
         long_description=file_contents("README.rst"),
         author="Adrián Pérez de Castro",
